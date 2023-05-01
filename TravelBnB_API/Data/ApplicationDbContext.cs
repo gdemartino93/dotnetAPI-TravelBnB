@@ -6,6 +6,7 @@ namespace TravelBnB_API.Data
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Apartment> Apartments { get; set; }
+        public DbSet<ApartmentNumber> ApartmentNumbers { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -72,6 +73,11 @@ namespace TravelBnB_API.Data
                     CreatedDate = DateTime.Now,
                 }
                 );
+            modelBuilder.Entity<ApartmentNumber>().HasData(
+                new ApartmentNumber() { AptNo = 12, CreatedDate = DateTime.Now, SpecialDetails = " parcheggio gratuito" },
+                new ApartmentNumber() { AptNo = 193, CreatedDate = DateTime.Now , SpecialDetails = "piscina coperta"}
+             );
+
         }
     }
 }

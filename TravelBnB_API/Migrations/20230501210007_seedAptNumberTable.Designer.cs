@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelBnB_API.Data;
 
@@ -11,9 +12,11 @@ using TravelBnB_API.Data;
 namespace TravelBnB_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230501210007_seedAptNumberTable")]
+    partial class seedAptNumberTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +73,7 @@ namespace TravelBnB_API.Migrations
                         {
                             Id = 1,
                             Amenity = "Parcheggio gratuito, Wi-Fi gratuito",
-                            CreatedDate = new DateTime(2023, 5, 1, 23, 50, 32, 799, DateTimeKind.Local).AddTicks(2928),
+                            CreatedDate = new DateTime(2023, 5, 1, 23, 0, 7, 572, DateTimeKind.Local).AddTicks(1498),
                             Details = "Questo appartamento si trova in una posizione panoramica con vista sulla città.",
                             ImageUrl = "https://esempio.com/immagine1.jpg",
                             Mq2 = 80,
@@ -83,7 +86,7 @@ namespace TravelBnB_API.Migrations
                         {
                             Id = 2,
                             Amenity = "Aria condizionata, Accesso per disabili",
-                            CreatedDate = new DateTime(2023, 5, 1, 23, 50, 32, 799, DateTimeKind.Local).AddTicks(3009),
+                            CreatedDate = new DateTime(2023, 5, 1, 23, 0, 7, 572, DateTimeKind.Local).AddTicks(1548),
                             Details = "Appartamento moderno nel cuore del centro città.",
                             ImageUrl = "https://esempio.com/immagine2.jpg",
                             Mq2 = 60,
@@ -96,7 +99,7 @@ namespace TravelBnB_API.Migrations
                         {
                             Id = 3,
                             Amenity = "Piscina, Giardino, Cucina completamente attrezzata",
-                            CreatedDate = new DateTime(2023, 5, 1, 23, 50, 32, 799, DateTimeKind.Local).AddTicks(3012),
+                            CreatedDate = new DateTime(2023, 5, 1, 23, 0, 7, 572, DateTimeKind.Local).AddTicks(1550),
                             Details = "Villa spaziosa con piscina privata e giardino.",
                             ImageUrl = "https://esempio.com/immagine3.jpg",
                             Mq2 = 150,
@@ -109,7 +112,7 @@ namespace TravelBnB_API.Migrations
                         {
                             Id = 4,
                             Amenity = "TV via cavo, Cucinino, Balcone con vista mare",
-                            CreatedDate = new DateTime(2023, 5, 1, 23, 50, 32, 799, DateTimeKind.Local).AddTicks(3015),
+                            CreatedDate = new DateTime(2023, 5, 1, 23, 0, 7, 572, DateTimeKind.Local).AddTicks(1578),
                             Details = "Monolocale accogliente vicino al mare.",
                             ImageUrl = "https://esempio.com/immagine4.jpg",
                             Mq2 = 30,
@@ -122,7 +125,7 @@ namespace TravelBnB_API.Migrations
                         {
                             Id = 5,
                             Amenity = "Palestra, Terrazza, Lavatrice",
-                            CreatedDate = new DateTime(2023, 5, 1, 23, 50, 32, 799, DateTimeKind.Local).AddTicks(3018),
+                            CreatedDate = new DateTime(2023, 5, 1, 23, 0, 7, 572, DateTimeKind.Local).AddTicks(1581),
                             Details = "Appartamento colorato con arredamento moderno.",
                             ImageUrl = "https://esempio.com/immagine5.jpg",
                             Mq2 = 70,
@@ -135,7 +138,7 @@ namespace TravelBnB_API.Migrations
 
             modelBuilder.Entity("TravelBnB_API.Models.ApartmentNumber", b =>
                 {
-                    b.Property<int>("AptNo")
+                    b.Property<int>("VillaNo")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -148,22 +151,22 @@ namespace TravelBnB_API.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AptNo");
+                    b.HasKey("VillaNo");
 
                     b.ToTable("ApartmentNumbers");
 
                     b.HasData(
                         new
                         {
-                            AptNo = 12,
-                            CreatedDate = new DateTime(2023, 5, 1, 23, 50, 32, 799, DateTimeKind.Local).AddTicks(3463),
+                            VillaNo = 12,
+                            CreatedDate = new DateTime(2023, 5, 1, 23, 0, 7, 572, DateTimeKind.Local).AddTicks(1711),
                             SpecialDetails = " parcheggio gratuito",
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            AptNo = 193,
-                            CreatedDate = new DateTime(2023, 5, 1, 23, 50, 32, 799, DateTimeKind.Local).AddTicks(3467),
+                            VillaNo = 193,
+                            CreatedDate = new DateTime(2023, 5, 1, 23, 0, 7, 572, DateTimeKind.Local).AddTicks(1713),
                             SpecialDetails = "piscina coperta",
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });

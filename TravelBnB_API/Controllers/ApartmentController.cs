@@ -10,7 +10,7 @@ using TravelBnB_API.Repository.IRepository;
 
 namespace TravelBnB_API.Controllers
 {
-    [Route("/api/travelBnB")]
+    [Route("/api/apartment")]
     [ApiController]
     public class ApartmentController : Controller
     {
