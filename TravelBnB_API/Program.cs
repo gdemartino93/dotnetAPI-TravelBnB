@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using TravelBnB_API.Data;
+using AutoMapper;
+using TravelBnB_API.Repository.IRepository;
+using TravelBnB_API.Repository;
 
 namespace TravelBnB_API
 {
@@ -8,8 +13,10 @@ namespace TravelBnB_API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            builder.Services.AddControllers();
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddAutoMapper(typeof(MappingConfig));
+            builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
+            builder.Services.AddControllers().AddXmlDataContractSerializerFormatters();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
