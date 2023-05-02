@@ -10,5 +10,8 @@ namespace TravelBnB_API.Models
         public string SpecialDetails { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set;}
+        [ForeignKey("Apartment")]
+        public int ApartmentId { get; set; }
+        public Apartment Apartment { get; set; }
     }
 }

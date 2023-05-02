@@ -8,6 +8,8 @@ namespace TravelBnB_API.Models.Dto
         [Required]
         public int AptNo { get; set; }
         public string SpecialDetails { get; set; }
+        [Required]
+        public int ApartmentId { get; set; }
 
     }
 }

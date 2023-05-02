@@ -14,12 +14,15 @@ namespace TravelBnB_API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IApartmentNumberRepository _repository;
+        private readonly IApartmentRepository _aptRepo;
         protected APIResponse _response;
-        public ApartmentNumberController(IMapper mapper, IApartmentNumberRepository repository)
+        public ApartmentNumberController(IMapper mapper, IApartmentNumberRepository repository, IApartmentRepository aptRepo)
         {
             _mapper = mapper;
             _repository = repository;
             this._response = new APIResponse();
+            _aptRepo = aptRepo;
+
         }
         [HttpGet]
         public async Task<ActionResult<APIResponse>> GetAll()
@@ -75,6 +78,13 @@ namespace TravelBnB_API.Controllers
                     ModelState.AddModelError("Error","Numero di appartamento già esistente");
                     return BadRequest(ModelState);
                 }
+                //controlliamo se l'appartmento collegato esiste
+                if(await _aptRepo.GetAsync(a => a.Id == createDTO.ApartmentId) == null)
+                {
+                    _response.Result = "Appartamento Collegato non esiste";
+                    _response.IsSuccess = false;
+                    return _response;
+                }
 
                 ApartmentNumber newApt = _mapper.Map<ApartmentNumber>(createDTO);
                 await _repository.CreateAsync(newApt);
@@ -113,8 +123,8 @@ namespace TravelBnB_API.Controllers
                 return _response;
             }
         }
-        [HttpPut]
-        public async Task<ActionResult<APIResponse>> Update(ApartmentNumberUpdateDTO aptUpdateDto)
+        [HttpPut("{aptNo}")]
+        public async Task<ActionResult<APIResponse>> Update(int aptNo,[FromBody]ApartmentNumberUpdateDTO aptUpdateDto)
         {
             try
             {
@@ -123,17 +133,23 @@ namespace TravelBnB_API.Controllers
                     _response.StatusCode = System.Net.HttpStatusCode.NotFound;
                     return _response;
                 }
-                if(_repository.GetAllAsync(a => a.AptNo == aptUpdateDto.AptNo) != null)
+                if(aptUpdateDto.AptNo != aptNo || aptUpdateDto == null)
                 {
                     _response.StatusCode = System.Net.HttpStatusCode.NotFound;
                     _response.ErrorMessages = new List<string> { "L'appartamento non esiste" };
                     return _response;
                 }
-                 ApartmentNumber updateApt = _mapper.Map<ApartmentNumber>(aptUpdateDto);
+                //controlliamo se l'appartmento collegato esiste
+                if (await _aptRepo.GetAsync(a => a.Id == aptUpdateDto.ApartmentId) == null)
+                {
+                    _response.Result = "Appartamento Collegato non esiste";
+                    _response.IsSuccess = false;
+                    return _response;
+                }
+                ApartmentNumber updateApt = _mapper.Map<ApartmentNumber>(aptUpdateDto);
                 await _repository.UpdateAsync(updateApt);
-                await _repository.SaveAsync();
-                _response.StatusCode = System.Net.HttpStatusCode.OK;
-                _response.Result = updateApt.AptNo;
+                 _response.StatusCode = System.Net.HttpStatusCode.OK;
+                _response.Result = "Aggiornato Correttamente";
                 return Ok(_response);
             }
             catch (Exception ex)
