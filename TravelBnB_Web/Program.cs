@@ -1,3 +1,7 @@
+using TravelBnB_Web.Models;
+using TravelBnB_Web.Services;
+using TravelBnB_Web.Services.IServices;
+
 namespace TravelBnB_Web
 {
     public class Program
@@ -8,7 +12,9 @@ namespace TravelBnB_Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddAutoMapper(typeof(MappingConfig));
+            builder.Services.AddHttpClient<IApartmentService,ApartmentService>();
+            builder.Services.AddScoped<IApartmentService, ApartmentService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

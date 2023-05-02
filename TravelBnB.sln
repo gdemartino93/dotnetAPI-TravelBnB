@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelBnB_API", "TravelBnB_API\TravelBnB_API.csproj", "{F21B95D2-682D-4D54-B9EB-55E66668F4F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelBnB_Web", "TravelBnB_Web\TravelBnB_Web.csproj", "{84FF01B0-AB12-4D0C-AFAF-B08F0E0B0633}"
+	ProjectSection(ProjectDependencies) = postProject
+		{43FDA898-55BD-4CF9-BEEF-489044605223} = {43FDA898-55BD-4CF9-BEEF-489044605223}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelBnB_Utility", "TravelBnB_Utility\TravelBnB_Utility.csproj", "{43FDA898-55BD-4CF9-BEEF-489044605223}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{84FF01B0-AB12-4D0C-AFAF-B08F0E0B0633}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84FF01B0-AB12-4D0C-AFAF-B08F0E0B0633}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84FF01B0-AB12-4D0C-AFAF-B08F0E0B0633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43FDA898-55BD-4CF9-BEEF-489044605223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43FDA898-55BD-4CF9-BEEF-489044605223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43FDA898-55BD-4CF9-BEEF-489044605223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43FDA898-55BD-4CF9-BEEF-489044605223}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

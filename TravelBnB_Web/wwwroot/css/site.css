@@ -20,3 +20,220 @@ html {
 body {
   margin-bottom: 60px;
 }
+.myBtnAdd {
+  position: relative;
+  background: white;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: none;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  padding: 1rem 3rem;
+  transition: 0.2s;
+}
+
+.myBtnAdd:hover {
+  letter-spacing: 0.2rem;
+  padding: 1.1rem 3.1rem;
+  background: var(--clr);
+  color: var(--clr);
+  box-shadow: 0 0 35px var(--clr); 
+  animation: box 3s infinite;
+}
+
+.myBtnAdd::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: black;
+}
+
+.myBtnAdd span {
+  position: relative;
+  z-index: 1;
+}
+.myBtnAdd i {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.myBtnAdd i::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 2px;
+  left: 80%;
+  top: -2px;
+  border: 2px solid var(--clr);
+  background: #272822;
+  transition: 0.2s;
+}
+
+.myBtnAdd:hover i::before {
+  width: 15px;
+  left: 20%;
+  animation: move 3s infinite;
+}
+
+.myBtnAdd i::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 2px;
+  left: 20%;
+  bottom: -2px;
+  border: 2px solid var(--clr);
+  background: #272822;
+  transition: 0.2s;
+}
+
+.myBtnAdd:hover i::after {
+  width: 15px;
+  left: 80%;
+  animation: move 3s infinite;
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes box {
+  0% {
+    box-shadow: #27272c;
+  }
+  50% {
+    box-shadow: 0 0 25px var(--clr);
+  }
+  100% {
+    box-shadow: #27272c;
+  }
+}
+.myBtnDelete {
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: red;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    background: #e62222;
+}
+
+    .myBtnDelete, button span {
+        transition: 200ms;
+    }
+
+        .myBtnDelete .text {
+            transform: translateX(35px);
+            color: white;
+            font-weight: bold;
+        }
+
+        .myBtnDelete .icon {
+            position: absolute;
+            border-left: 1px solid #c41b1b;
+            transform: translateX(110px);
+            height: 40px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .myBtnDelete svg {
+            width: 15px;
+            fill: #eee;
+        }
+
+        .myBtnDelete:hover {
+            background: #ff3636;
+        }
+
+            .myBtnDelete:hover .text {
+                color: transparent;
+            }
+
+            .myBtnDelete:hover .icon {
+                width: 150px;
+                border-left: none;
+                transform: translateX(0);
+            }
+
+        .myBtnDelete:focus {
+            outline: none;
+        }
+
+        .myBtnDelete:active .icon svg {
+            transform: scale(0.8);
+        }
+.myBtnEdit {
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    background: #FFA500;
+}
+
+, button span {
+    transition: 200ms;
+}
+
+    .myBtnEdit .text {
+        transform: translateX(35px);
+        color: white;
+        font-weight: bold;
+    }
+
+    .myBtnEdit .icon {
+        position: absolute;
+        border-left: 1px solid #c41b1b;
+        transform: translateX(110px);
+        height: 40px;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .myBtnEdit svg {
+        width: 15px;
+        fill: #eee;
+    }
+
+.myBtnEdit:hover {
+    background: #FFA500;
+}
+
+        .myBtnEdit:hover .text {
+            color: transparent;
+        }
+
+        .myBtnEdit:hover .icon {
+            width: 150px;
+            border-left: none;
+            transform: translateX(0);
+        }
+
+    .myBtnEdit:focus {
+        outline: none;
+    }
+
+    .myBtnEdit:active .icon svg {
+        transform: scale(0.8);
+    }
