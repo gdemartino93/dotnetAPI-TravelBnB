@@ -27,5 +27,23 @@ namespace TravelBnB_Web.Controllers
             }
             return View(listApt);
         }
+        public async Task<IActionResult> CreateApartment()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateApartment(ApartmentCreateDTO apartmentCreateDTO)
+        {
+            if(ModelState.IsValid)
+            {
+                var response = await _service.CreateAsync<APIResponse>(apartmentCreateDTO);
+                if(response.IsSuccess && response is not null)
+                {
+                    return RedirectToAction(nameof(IndexApartment));
+                }
+            }
+            return View(apartmentCreateDTO);
+        }
     }
 }
