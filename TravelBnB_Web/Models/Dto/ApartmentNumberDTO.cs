@@ -10,6 +10,7 @@ namespace TravelBnB_Web.Models
         public string SpecialDetails { get; set; }
         [Required]
         public int ApartmentId { get; set; }
+        public ApartmentDTO Apartment { get; set; }
 
     }
 }

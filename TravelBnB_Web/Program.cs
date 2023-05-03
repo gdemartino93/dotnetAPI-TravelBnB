@@ -15,6 +15,9 @@ namespace TravelBnB_Web
             builder.Services.AddAutoMapper(typeof(MappingConfig));
             builder.Services.AddHttpClient<IApartmentService,ApartmentService>();
             builder.Services.AddScoped<IApartmentService, ApartmentService>();
+
+            builder.Services.AddHttpClient<IApartmentNumberService, ApartmentNumberService>();
+            builder.Services.AddScoped<IApartmentNumberService,ApartmentNumberService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

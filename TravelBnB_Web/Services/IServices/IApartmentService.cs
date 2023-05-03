@@ -1,6 +1,4 @@
-﻿
-
-namespace TravelBnB_Web.Services.IServices
+﻿namespace TravelBnB_Web.Services.IServices
 {
     public interface IApartmentService
     {

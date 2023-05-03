@@ -29,7 +29,7 @@ namespace TravelBnB_API.Controllers
         {
             try
             {
-                List<ApartmentNumber> apartmentNumbersList = await _repository.GetAllAsync();
+                List<ApartmentNumber> apartmentNumbersList = await _repository.GetAllAsync(includeProperties:"Apartment");
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
                 _response.Result = apartmentNumbersList;
                 return _response;
