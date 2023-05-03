@@ -97,7 +97,7 @@ namespace TravelBnB_API.Controllers
             }
             return _response;
         }
-        [HttpDelete("id",Name = "DeleteApartment")]
+        [HttpDelete("{id}",Name = "DeleteApartment")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 

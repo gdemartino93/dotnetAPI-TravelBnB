@@ -56,5 +56,17 @@ namespace TravelBnB_Web.Controllers
             }
             return NotFound();
         }
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeleteApartment(ApartmentDTO model)
+        {
+            var response = await _service.DeleteAsync<APIResponse>(model.Id);
+            if(response.IsSuccess && response is not null)
+            {
+                return RedirectToAction(nameof(IndexApartment));
+            }
+
+            return View(model);
+        }
     }
 }
