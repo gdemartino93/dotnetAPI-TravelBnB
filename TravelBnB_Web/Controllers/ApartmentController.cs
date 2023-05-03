@@ -48,10 +48,11 @@ namespace TravelBnB_Web.Controllers
         public async Task<IActionResult> DeleteApartment(int id)
         {
             var response = await _service.GetAsync<APIResponse>(id);
-            if(response.IsSuccess && response != null)
+
+            if (response is not null && response.IsSuccess)
             {
-                ApartmentDTO apartmentDTO = JsonConvert.DeserializeObject<ApartmentDTO>(Convert.ToString(response.Result));
-                return View(apartmentDTO);
+                ApartmentDTO model = JsonConvert.DeserializeObject<ApartmentDTO>(Convert.ToString(response.Result));
+                return View(model);
             }
             return NotFound();
         }

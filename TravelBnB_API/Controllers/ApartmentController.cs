@@ -41,7 +41,7 @@ namespace TravelBnB_API.Controllers
             }
             return _response;
         }
-        [HttpGet("id",Name ="GetApartment")]
+        [HttpGet("{id}",Name ="GetApartment")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

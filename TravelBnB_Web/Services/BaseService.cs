@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 using TravelBnB_Utility;
 using TravelBnB_Web.Models;
@@ -48,6 +49,7 @@ namespace TravelBnB_Web.Services
                 }
                 HttpResponseMessage apiResponse = null;
                 apiResponse = await client.SendAsync(message);
+
                 //leggi il contenuto della chiamata api
                 var apiContent = await apiResponse.Content.ReadAsStringAsync(); 
 
@@ -61,6 +63,7 @@ namespace TravelBnB_Web.Services
                 {
                     ErrorMessages = new List<string> { Convert.ToString(e.Message) },
                     IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError  
                 };
                 var res = JsonConvert.SerializeObject(dto);
                 var APIResponse = JsonConvert.DeserializeObject<T>(res);

@@ -46,7 +46,7 @@ namespace TravelBnB_Web.Services
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = StaticData.ApiType.GET,
-                Url = aptUrl + "apartment/" + id
+                Url = $"{aptUrl}apartment/{id}"
             });
         }
 
