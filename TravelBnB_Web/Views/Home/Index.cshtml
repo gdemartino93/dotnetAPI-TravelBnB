@@ -1,8 +1,23 @@
-﻿@{
+﻿@model IEnumerable<ApartmentDTO>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero">
+    <i class="bi bi-arrow-down-circle-fill scrollBtn" id="scrollButton"></i>
 </div>
+class="" 
+<div class="container">
+    mio contenuto
+</div>
+@section Scripts{
+   <script>
+        $(document).ready(function () {
+            $("#scrollButton").click(function () {
+                $('html, body').animate({
+                    scrollTop: $(".container").offset().top
+                }, 800);
+            });
+        });
+   </script>
+}

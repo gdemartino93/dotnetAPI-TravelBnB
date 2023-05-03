@@ -72,15 +72,15 @@ a{
         background: #ff3636;
     }
 
-        .myBtn:hover .text {
-            color: transparent;
-        }
+     .myBtn:hover .text {
+        color: transparent;
+     }
 
-        .myBtn:hover .icon {
-            width: 150px;
-            border-left: none;
-            transform: translateX(0);
-        }
+     .myBtn:hover .icon {
+         width: 150px;
+         border-left: none;
+         transform: translateX(0);
+     }
 
     .myBtn:focus {
         outline: none;
@@ -94,23 +94,46 @@ a{
         background: #e62222;
     }
 
-        .myBtn.red .icon {
-            border-color: #c41b1b;
-        }
+     .myBtn.red .icon {
+        border-color: #c41b1b;
+     }
 
     .myBtn.orange {
         background: #FFA500;
     }
 
-        .myBtn.orange .icon {
-            border-color: #cb8e1e;
-        }
+     .myBtn.orange .icon {
+       border-color: #cb8e1e;
+     }
 
  
     .myBtn.green {
         background: green;
     }
 
-        .myBtn.green .icon {
+     .myBtn.green .icon {
             border-color: #54a771;
-        }
+     }
+.hero{
+    width:100%;
+    height:100vh;
+    background-image:url(../image/hero.png);
+    background-repeat : no-repeat;
+    background-size : cover;
+    position:relative;
+}
+.mynav {
+    width: 100%;
+    z-index:1;
+    position: fixed;
+    top: 0;
+    background: rgba(0,0,0,.3);
+}
+.scrollBtn{
+    position:absolute;
+    bottom:150px;
+    left:150px;
+    font-size:60px;
+    color:white;
+    cursor:pointer;
+}
