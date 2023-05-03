@@ -45,5 +45,15 @@ namespace TravelBnB_Web.Controllers
             }
             return View(apartmentCreateDTO);
         }
+        public async Task<IActionResult> DeleteApartment(int id)
+        {
+            var response = await _service.GetAsync<APIResponse>(id);
+            if(response.IsSuccess && response != null)
+            {
+                ApartmentDTO apartmentDTO = JsonConvert.DeserializeObject<ApartmentDTO>(Convert.ToString(response.Result));
+                return View(apartmentDTO);
+            }
+            return NotFound();
+        }
     }
 }
