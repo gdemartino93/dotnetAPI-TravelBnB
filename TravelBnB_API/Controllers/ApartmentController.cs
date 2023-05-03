@@ -118,7 +118,7 @@ namespace TravelBnB_API.Controllers
             }
             return _response;
         }
-        [HttpPut("id",Name = "UpdateApartment")]
+        [HttpPut("{id}",Name = "UpdateApartment")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> UpdateApartment(int id, [FromBody]ApartmentUpdateDTO apartmentDTO)

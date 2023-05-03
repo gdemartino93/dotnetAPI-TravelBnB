@@ -68,5 +68,26 @@ namespace TravelBnB_Web.Controllers
 
             return View(model);
         }
+        public async Task<IActionResult> UpdateApartment(int id)
+        {
+            var response = await _service.GetAsync<APIResponse>(id);
+            if(response  is not null && response.IsSuccess)
+            {
+                ApartmentUpdateDTO model = JsonConvert.DeserializeObject<ApartmentUpdateDTO> (Convert.ToString(response.Result));
+                return View(model);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> UpdateApartment(ApartmentUpdateDTO aptUpdate)
+        {
+            var response = await _service.UpdateAsync<APIResponse>(aptUpdate);
+            if(ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(IndexApartment));
+            }
+            return View(aptUpdate);
+        }
     }
 }

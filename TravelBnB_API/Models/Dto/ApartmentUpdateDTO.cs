@@ -10,15 +10,11 @@ namespace TravelBnB_API.Models.Dto
         [Required]
         [MaxLength(30)]
         public string Name { get; set; }
-        [Required]
-        public string Details { get; set; }
+        public string? Details { get; set; }
         [Required]
         public double Rate { get; set; }
-        [Required]
-        public int Mq2 { get; set; }
-        [Required]
-        public int Occupancy { get; set; }
-        [Required]
+        public int? Mq2 { get; set; }
+        public int? Occupancy { get; set; }
         public string? ImageUrl { get; set; }
         public string? Amenity { get; set; }
         
