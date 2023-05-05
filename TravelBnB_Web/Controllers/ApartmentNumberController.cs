@@ -58,14 +58,17 @@ namespace TravelBnB_Web.Controllers
                 var response = await _serviceAptNo.CreateAsync<APIResponse>(model.ApartmentNumberCreateDTO);
                 if (response.IsSuccess && response is not null)
                 {
-                    if (response.ErrorMessages.Count > 0)
+
+                    try
                     {
                         ModelState.AddModelError("Errore", response.ErrorMessages.FirstOrDefault());
                     }
-                    else
+                    catch (Exception)
                     {
                         return RedirectToAction(nameof(IndexApartmentNumber));
+                        
                     }
+
                 }
             }
 
@@ -81,20 +84,7 @@ namespace TravelBnB_Web.Controllers
 
             return View(model);
 
-            //[HttpPost]
-            //[ValidateAntiForgeryToken]
-            //public async Task<IActionResult> UpdateApartmentNumber()
-            //{
-            //    ViewModel aptList = new();
-            //    var response = await _serviceApt.GetAllAsync<APIResponse>();
-            //    if(response is not null && response.IsSuccess)
-            //    {
-            //        aptList = JsonConvert.DeserializeObject<List<ApartmentNumberDTO>>(response.Result).Select( a => new SelectListItem
-            //        {
-            //            Text = a.
-            //        })
-            //    }
-            //}
+   
         }
     }
 }
