@@ -33,7 +33,7 @@ namespace TravelBnB_Web.Controllers
         public async Task<IActionResult> CreateApartmentNumber()
         {
             //usiamo il viewmodel per ottenre gli appartamenti per popolare il menu dropdown
-            ViewModel aptList = new();
+            ApartmentNumberCreateVM aptList = new();
 
             var response = await _serviceApt.GetAllAsync<APIResponse>();
             if (response.IsSuccess && response is not null)
@@ -50,7 +50,7 @@ namespace TravelBnB_Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateApartmentNumber(ViewModel model)
+        public async Task<IActionResult> CreateApartmentNumber(ApartmentNumberCreateVM model)
         {
 
             if (ModelState.IsValid)
@@ -84,7 +84,76 @@ namespace TravelBnB_Web.Controllers
 
             return View(model);
 
-   
+        }
+        public async Task<IActionResult> DeleteApartmentNumber(int id)
+        {
+            var response = await _serviceAptNo.GetAsync<APIResponse>(id);
+            if (response is not null && response.IsSuccess)
+            {
+                ApartmentNumberDTO apartment = JsonConvert.DeserializeObject<ApartmentNumberDTO>(Convert.ToString(response.Result));
+                return View(apartment);
+            }
+            return NotFound();
+        }
+
+        public async Task<IActionResult> UpdateApartmentNumber(int id)
+        {
+            //usiamo il viewmodel per ottenre gli appartamenti per popolare il menu dropdown
+            ApartmentNumberUpdateVM aptList = new();
+            var response = await _serviceAptNo.GetAsync<APIResponse>(id);
+            if(response is not null && response.IsSuccess)
+            {
+                ApartmentNumberDTO apartment = JsonConvert.DeserializeObject<ApartmentNumberDTO>(Convert.ToString(response.Result));
+                aptList.ApartmentNumber = _mapper.Map<ApartmentNumberUpdateVM>(apartment);
+            }
+
+            response = await _serviceApt.GetAllAsync<APIResponse>();
+            if (response.IsSuccess && response is not null)
+            {
+                aptList.Apartments = JsonConvert.DeserializeObject<List<ApartmentDTO>>(Convert.ToString(response.Result)).Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Id.ToString()
+
+                });
+                return View(aptList);
+
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateApartment(ApartmentNumberUpdateVM apartment)
+        {
+            if(ModelState.IsValid)
+            {
+                var response = await _serviceAptNo.UpdateAsync<APIResponse>(apartment);
+                if(response is not null && response.IsSuccess )
+                {
+                    return RedirectToAction(nameof(IndexApartmentNumber));
+                }
+                else
+                {
+                    if(response.ErrorMessages.Count > 0)
+                    {
+                        ModelState.AddModelError("Error", response.ErrorMessages.FirstOrDefault());
+                    }
+                }
+            }
+            //per il dropdrown con la lista degli apt
+            var res = await _serviceApt.GetAllAsync<APIResponse>();
+            if(res is not null && res.IsSuccess )
+            {
+                apartment.Apartments = JsonConvert.DeserializeObject<List<ApartmentDTO>>(Convert.ToString(res.Result)).Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Id.ToString()
+                });
+            }
+            return View(apartment);
+
+
+
         }
     }
 }

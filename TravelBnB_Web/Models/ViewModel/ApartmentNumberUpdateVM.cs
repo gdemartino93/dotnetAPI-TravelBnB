@@ -3,15 +3,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TravelBnB_Web.Models.ViewModel
 {
-    public class ViewModel
+    public class ApartmentNumberUpdateVM
     {
-        public ApartmentNumberCreateDTO ApartmentNumberCreateDTO { get; set; }
+        public ApartmentNumberUpdateDTO ApartmentNumber { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> Apartments { get; set; }
-
-        public ViewModel()
+        public ApartmentNumberUpdateVM()
         {
-            ApartmentNumberCreateDTO = new ApartmentNumberCreateDTO();
+            ApartmentNumber = new ApartmentNumberUpdateDTO();
         }
     }
 }

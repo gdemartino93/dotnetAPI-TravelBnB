@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TravelBnB_Web.Models.ViewModel;
 
 namespace TravelBnB_Web.Models
 {
@@ -14,7 +15,6 @@ namespace TravelBnB_Web.Models
             CreateMap<ApartmentNumberDTO, ApartmentNumberCreateDTO>().ReverseMap();
             CreateMap<ApartmentNumber, ApartmentNumberUpdateDTO>().ReverseMap();
             CreateMap<ApartmentNumberCreateDTO,ApartmentNumber>().ReverseMap();
-
         }
     }
 }
