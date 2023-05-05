@@ -28,7 +28,7 @@ namespace TravelBnB_Web.Services
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = TravelBnB_Utility.StaticData.ApiType.DELETE,
-                Url = aptUrl + number
+                Url = aptUrl + "apartmentnumber/" + number
             });
         }
 

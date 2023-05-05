@@ -127,12 +127,12 @@ namespace TravelBnB_API.Controllers
             {
                 if (apartmentDTO == null || apartmentDTO.Id != id)
                 {
-                    ModelState.AddModelError("error", "Impossibile aggiornare l'appartemento selezionato");
+                    ModelState.AddModelError("Error", "Impossibile aggiornare l'appartemento selezionato");
                     return BadRequest(ModelState);
                 }
                 if (String.IsNullOrWhiteSpace(apartmentDTO.Name))
                 {
-                    ModelState.AddModelError("name", "Il nome non può essere vuoto");
+                    ModelState.AddModelError("Error", "Il nome non può essere vuoto");
                 }
                 if (!ModelState.IsValid)
                 {

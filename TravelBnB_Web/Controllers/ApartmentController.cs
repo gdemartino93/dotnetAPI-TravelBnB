@@ -27,7 +27,7 @@ namespace TravelBnB_Web.Controllers
             }
             return View(listApt);
         }
-        public async Task<IActionResult> CreateApartment()
+        public IActionResult CreateApartment()
         {
             return View();
         }

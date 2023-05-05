@@ -74,6 +74,7 @@ namespace TravelBnB_API.Repository
 
         public async Task UpdateAsync(T entity)
         {
+            
             dbSet.Update(entity);
             await SaveAsync();
         }

@@ -51,9 +51,27 @@ namespace TravelBnB_Web.Services
                 apiResponse = await client.SendAsync(message);
 
                 //leggi il contenuto della chiamata api
-                var apiContent = await apiResponse.Content.ReadAsStringAsync(); 
+                var apiContent = await apiResponse.Content.ReadAsStringAsync();
 
-                //deserializzo
+                try
+                {
+                    APIResponse ApiResponse = JsonConvert.DeserializeObject<APIResponse>(apiContent);
+                    if (ApiResponse != null && (apiResponse.StatusCode == System.Net.HttpStatusCode.BadRequest
+                        || apiResponse.StatusCode == System.Net.HttpStatusCode.NotFound))
+                    {
+                        ApiResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                        ApiResponse.IsSuccess = false;
+                        var res = JsonConvert.SerializeObject(ApiResponse);
+                        var returnObj = JsonConvert.DeserializeObject<T>(res);
+                        return returnObj;
+                    }
+                }
+                catch (Exception)
+                {
+                    var exceptionResponse = JsonConvert.DeserializeObject<T>(apiContent);
+                    return exceptionResponse;
+                   
+                }
                 var APIResponse = JsonConvert.DeserializeObject<T>(apiContent);
                 return APIResponse;
             }
@@ -66,8 +84,10 @@ namespace TravelBnB_Web.Services
                     StatusCode = HttpStatusCode.InternalServerError  
                 };
                 var res = JsonConvert.SerializeObject(dto);
-                var APIResponse = JsonConvert.DeserializeObject<T>(res);
+                var APIResponse  = JsonConvert.DeserializeObject<T> (res);
                 return APIResponse;
+
+                
             }
         }
     }

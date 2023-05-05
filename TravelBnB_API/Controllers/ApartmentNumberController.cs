@@ -64,25 +64,29 @@ namespace TravelBnB_API.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<APIResponse>> Create([FromBody]ApartmentNumberCreateDTO createDTO)
+        public async Task<ActionResult<APIResponse>> Create([FromBody] ApartmentNumberCreateDTO createDTO)
         {
             try
             {
-                if(createDTO is null)
+                if (createDTO is null)
                 {
                     _response.StatusCode = System.Net.HttpStatusCode.NotFound;
                     return _response;
                 }
-                if(await _repository.GetAsync(a => a.AptNo == createDTO.AptNo) != null)
+                if (await _repository.GetAsync(a => a.AptNo == createDTO.AptNo) != null)
                 {
-                    ModelState.AddModelError("Error","Numero di appartamento già esistente");
-                    return BadRequest(ModelState);
+                    ModelState.AddModelError("Errore", "Numero di appartamento già esistente");
+                    _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    _response.ErrorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                    return _response;
                 }
-                //controlliamo se l'appartmento collegato esiste
-                if(await _aptRepo.GetAsync(a => a.Id == createDTO.ApartmentId) == null)
+
+                // Controlliamo se l'appartamento collegato esiste
+                if (await _aptRepo.GetAsync(a => a.Id == createDTO.ApartmentId) == null)
                 {
-                    _response.Result = "Appartamento Collegato non esiste";
-                    _response.IsSuccess = false;
+                    ModelState.AddModelError("Errore", "Appartamento Collegato non esiste");
+                    _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    _response.ErrorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
                     return _response;
                 }
 
@@ -100,6 +104,7 @@ namespace TravelBnB_API.Controllers
                 return _response;
             }
         }
+
         [HttpDelete]
         public async Task<ActionResult<APIResponse>> Delete(int aptNo)
         {
@@ -128,11 +133,6 @@ namespace TravelBnB_API.Controllers
         {
             try
             {
-                if(aptUpdateDto == null)
-                {
-                    _response.StatusCode = System.Net.HttpStatusCode.NotFound;
-                    return _response;
-                }
                 if(aptUpdateDto.AptNo != aptNo || aptUpdateDto == null)
                 {
                     _response.StatusCode = System.Net.HttpStatusCode.NotFound;
@@ -142,11 +142,11 @@ namespace TravelBnB_API.Controllers
                 //controlliamo se l'appartmento collegato esiste
                 if (await _aptRepo.GetAsync(a => a.Id == aptUpdateDto.ApartmentId) == null)
                 {
-                    _response.Result = "Appartamento Collegato non esiste";
+                    ModelState.AddModelError("Errore","Appartamento Collegato non esiste");
                     _response.IsSuccess = false;
-                    return _response;
+                    return BadRequest(ModelState);
                 }
-                ApartmentNumber updateApt = _mapper.Map<ApartmentNumber>(aptUpdateDto);
+                ApartmentNumber updateApt =  _mapper.Map<ApartmentNumber>(aptUpdateDto);
                 await _repository.UpdateAsync(updateApt);
                  _response.StatusCode = System.Net.HttpStatusCode.OK;
                 _response.Result = "Aggiornato Correttamente";

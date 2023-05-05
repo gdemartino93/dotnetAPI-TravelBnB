@@ -14,7 +14,7 @@
         @foreach(var apt in Model)
         {
             <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="@apt.ImageUrl" class="card-img-top" alt="@apt.Name">
                 <div class="card-body">
                     <h5 class="card-title">@apt.Name</h5>
                     <p class="card-text">@apt.Details</p>
