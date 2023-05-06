@@ -85,32 +85,22 @@ namespace TravelBnB_Web.Controllers
             return View(model);
 
         }
-        public async Task<IActionResult> DeleteApartmentNumber(int id)
-        {
-            var response = await _serviceAptNo.GetAsync<APIResponse>(id);
-            if (response is not null && response.IsSuccess)
-            {
-                ApartmentNumberDTO apartment = JsonConvert.DeserializeObject<ApartmentNumberDTO>(Convert.ToString(response.Result));
-                return View(apartment);
-            }
-            return NotFound();
-        }
 
-        public async Task<IActionResult> UpdateApartmentNumber(int id)
+        public async Task<IActionResult> UpdateApartmentNumber(int aptNo)
         {
             //usiamo il viewmodel per ottenre gli appartamenti per popolare il menu dropdown
             ApartmentNumberUpdateVM aptList = new();
-            var response = await _serviceAptNo.GetAsync<APIResponse>(id);
+            var response = await _serviceAptNo.GetAsync<APIResponse>(aptNo);
             if(response is not null && response.IsSuccess)
             {
                 ApartmentNumberDTO apartment = JsonConvert.DeserializeObject<ApartmentNumberDTO>(Convert.ToString(response.Result));
-                aptList.ApartmentNumber = _mapper.Map<ApartmentNumberUpdateVM>(apartment);
+                aptList.ApartmentNumber = _mapper.Map<ApartmentNumberUpdateDTO>(apartment);
             }
 
-            response = await _serviceApt.GetAllAsync<APIResponse>();
-            if (response.IsSuccess && response is not null)
+            var res = await _serviceApt.GetAllAsync<APIResponse>();
+            if (res.IsSuccess && res is not null)
             {
-                aptList.Apartments = JsonConvert.DeserializeObject<List<ApartmentDTO>>(Convert.ToString(response.Result)).Select(a => new SelectListItem
+                aptList.Apartments = JsonConvert.DeserializeObject<List<ApartmentDTO>>(Convert.ToString(res.Result)).Select(a => new SelectListItem
                 {
                     Text = a.Name,
                     Value = a.Id.ToString()
@@ -127,7 +117,7 @@ namespace TravelBnB_Web.Controllers
         {
             if(ModelState.IsValid)
             {
-                var response = await _serviceAptNo.UpdateAsync<APIResponse>(apartment);
+                var response = await _serviceAptNo.UpdateAsync<APIResponse>(apartment.ApartmentNumber);
                 if(response is not null && response.IsSuccess )
                 {
                     return RedirectToAction(nameof(IndexApartmentNumber));
@@ -151,9 +141,28 @@ namespace TravelBnB_Web.Controllers
                 });
             }
             return View(apartment);
+        }
 
-
-
+        public async Task<IActionResult> DeleteApartmentNumber(int aptNo)
+        {
+            var response = await _serviceAptNo.GetAsync<APIResponse>(aptNo);
+            if (response is not null && response.IsSuccess)
+            {
+                ApartmentNumberDTO apartment = JsonConvert.DeserializeObject<ApartmentNumberDTO>(Convert.ToString(response.Result));
+                return View(apartment);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteApartment(ApartmentNumberDeleteVM apartment)
+        {
+            var response = await _serviceAptNo.DeleteAsync<APIResponse>(apartment.ApartmentNumber.AptNo);
+            if( response is not null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(IndexApartmentNumber));
+            }
+            return View(apartment);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TravelBnB_API.Repository
         public Repository(ApplicationDbContext db)
         {
             _db = db;
-            _db.ApartmentNumbers.Include(a => a.Apartment).ToList();
+            //_db.ApartmentNumbers.Include(a => a.Apartment).ToList();
             this.dbSet = _db.Set<T>();
         }
         public async Task CreateAsync(T entity)
@@ -72,11 +72,5 @@ namespace TravelBnB_API.Repository
             return _db.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(T entity)
-        {
-            
-            dbSet.Update(entity);
-            await SaveAsync();
-        }
     }
 }

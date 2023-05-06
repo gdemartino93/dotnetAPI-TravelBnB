@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TravelBnB_API.Models;
 using TravelBnB_API.Models.Dto;
 using TravelBnB_API.Repository.IRepository;
@@ -13,13 +14,13 @@ namespace TravelBnB_API.Controllers
     public class ApartmentNumberController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IApartmentNumberRepository _repository;
+        private readonly IApartmentNumberRepository _aptNo;
         private readonly IApartmentRepository _aptRepo;
         protected APIResponse _response;
         public ApartmentNumberController(IMapper mapper, IApartmentNumberRepository repository, IApartmentRepository aptRepo)
         {
             _mapper = mapper;
-            _repository = repository;
+            _aptNo = repository;
             this._response = new APIResponse();
             _aptRepo = aptRepo;
 
@@ -29,7 +30,7 @@ namespace TravelBnB_API.Controllers
         {
             try
             {
-                List<ApartmentNumber> apartmentNumbersList = await _repository.GetAllAsync(includeProperties:"Apartment");
+                List<ApartmentNumber> apartmentNumbersList = await _aptNo.GetAllAsync(includeProperties:"Apartment");
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
                 _response.Result = apartmentNumbersList;
                 return _response;
@@ -46,15 +47,20 @@ namespace TravelBnB_API.Controllers
         {
             try
             {
-                if(aptNo is 0)
+                if(aptNo == 0)
                 {
                     _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
-                    return _response;
+                    return BadRequest(_response);
                 }
-                ApartmentNumber apt = await _repository.GetAsync(a => a.AptNo == aptNo);
+                var apt = await _aptNo.GetAsync(a => a.AptNo == aptNo);
+                if(apt is null)
+                {
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
-                _response.Result = apt;
-                return _response;
+                _response.Result = _mapper.Map<ApartmentNumberDTO>(apt);
+                return Ok(_response);
             }
             catch (Exception ex)
             {
@@ -73,7 +79,7 @@ namespace TravelBnB_API.Controllers
                     _response.StatusCode = System.Net.HttpStatusCode.NotFound;
                     return _response;
                 }
-                if (await _repository.GetAsync(a => a.AptNo == createDTO.AptNo) != null)
+                if (await _aptNo.GetAsync(a => a.AptNo == createDTO.AptNo) != null)
                 {
                     ModelState.AddModelError("Errore", "Numero di appartamento già esistente");
                     _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
@@ -91,7 +97,7 @@ namespace TravelBnB_API.Controllers
                 }
 
                 ApartmentNumber newApt = _mapper.Map<ApartmentNumber>(createDTO);
-                await _repository.CreateAsync(newApt);
+                await _aptNo.CreateAsync(newApt);
                 _response.StatusCode = System.Net.HttpStatusCode.Created;
                 _response.Result = _mapper.Map<ApartmentNumberDTO>(createDTO);
 
@@ -114,8 +120,8 @@ namespace TravelBnB_API.Controllers
                 {
                     _response.StatusCode =System.Net.HttpStatusCode.NotFound;
                 }
-                ApartmentNumber apt = await _repository.GetAsync(a => a.AptNo == aptNo);
-                await _repository.RemoveAsync(apt);
+                ApartmentNumber apt = await _aptNo.GetAsync(a => a.AptNo == aptNo);
+                await _aptNo.RemoveAsync(apt);
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
                 _response.Result = $"Appartamento n.{aptNo} Eliminato";
                 return _response;
@@ -131,30 +137,31 @@ namespace TravelBnB_API.Controllers
         [HttpPut("{aptNo}")]
         public async Task<ActionResult<APIResponse>> Update(int aptNo,[FromBody]ApartmentNumberUpdateDTO aptUpdateDto)
         {
+;
             try
             {
-                if(aptUpdateDto.AptNo != aptNo || aptUpdateDto == null)
+                if (aptUpdateDto.AptNo != aptNo || aptUpdateDto == null)
                 {
                     _response.StatusCode = System.Net.HttpStatusCode.NotFound;
                     _response.ErrorMessages = new List<string> { "L'appartamento non esiste" };
-                    return _response;
+                    return BadRequest(_response);
                 }
                 //controlliamo se l'appartmento collegato esiste
                 if (await _aptRepo.GetAsync(a => a.Id == aptUpdateDto.ApartmentId) == null)
                 {
-                    ModelState.AddModelError("Errore","Appartamento Collegato non esiste");
+                    ModelState.AddModelError("Errore", "Appartamento Collegato non esiste");
                     _response.IsSuccess = false;
                     return BadRequest(ModelState);
                 }
-                ApartmentNumber updateApt =  _mapper.Map<ApartmentNumber>(aptUpdateDto);
-                await _repository.UpdateAsync(updateApt);
-                 _response.StatusCode = System.Net.HttpStatusCode.OK;
+                ApartmentNumber model = _mapper.Map<ApartmentNumber>(aptUpdateDto);
+                await _aptNo.UpdateAsync(model);
+                _response.StatusCode = System.Net.HttpStatusCode.OK;
                 _response.Result = "Aggiornato Correttamente";
                 return Ok(_response);
             }
             catch (Exception ex)
             {
-                _response.StatusCode=System.Net.HttpStatusCode.BadRequest;
+                _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 _response.ErrorMessages = new List<string> { ex.Message };
                 return _response;
             }
