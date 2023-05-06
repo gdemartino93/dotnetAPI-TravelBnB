@@ -111,7 +111,7 @@ namespace TravelBnB_API.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{aptNo}")]
         public async Task<ActionResult<APIResponse>> Delete(int aptNo)
         {
             try

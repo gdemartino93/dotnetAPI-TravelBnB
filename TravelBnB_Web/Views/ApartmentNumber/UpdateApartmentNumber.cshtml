@@ -1,18 +1,20 @@
 ﻿@using TravelBnB_Web.Models.ViewModel;
 @model ApartmentNumberUpdateVM
 
-<div class="container">
+<div class="container my-5 mybox">
     <div class="row">
         <h2 class="text-center my-3"> Aggiorna la camera</h2>
     </div>
     <div class="row">
         <div class="d-flex justify-content-center my-3">
-            <input asp-for="ApartmentNumber.AptNo" hidden />
+
             <form class="col-12 col-md-8 col-lg-6" method="post" asp-controller="ApartmentNumber" asp-action="UpdateApartment">
                 <div asp-validation-summary="All" class="text-danger"></div>
+                <input asp-for="ApartmentNumber.AptNo" hidden class="form-control">
+
                 <div class="mb-3">
                     <label asp-for="ApartmentNumber.AptNo">Numero Camera</label>
-                    <input asp-for="ApartmentNumber.AptNo" class="form-control">
+                    <input asp-for="ApartmentNumber.AptNo" disabled class="form-control">
                 </div>
                 <div class="mb-3">
                     <label asp-for="ApartmentNumber.SpecialDetails">Dettagli</label>
@@ -22,7 +24,7 @@
                     <option selected>Open this select menu</option>
                 </select>
 
-                <div class="d-flex justify-content-end gap-3">
+                <div class="d-flex justify-content-end gap-3 my-2">
                     <a class="myBtn orange" asp-controller="ApartmentNumber" asp-action="IndexApartmentNumber">
                         <span class="text">Indietro</span><span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
@@ -32,8 +34,8 @@
                     </a>
                     <button class="myBtn green" type="submit">
                         <span class="text">Modifica</span><span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
                             </svg>
                         </span>
                     </button>

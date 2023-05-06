@@ -1,27 +1,29 @@
 ﻿@using TravelBnB_Web.Models.ViewModel;
 @model ApartmentNumberDeleteVM
 
-<div class="container">
+<div class="container my-5 mybox">
     <div class="row">
         <h2 class="text-center my-3"> Elimina un apparamento</h2>
     </div>
     <div class="row">
         <div class="d-flex justify-content-center my-3">
-            <form class="col-12 col-md-8 col-lg-6" method="post" asp-controller="ApartmentNumber" asp-action="CreateApartmentNumber">
+            <form class="col-12 col-md-8 col-lg-6" method="post" asp-controller="ApartmentNumber" asp-action="DeleteApartment">
                 <div asp-validation-summary="All" class="text-danger"></div>
+                <input asp-for="ApartmentNumber.AptNo" class="form-control" hidden>
+
                 <div class="mb-3">
-                    <label asp-for="ApartmentNumber.SpecialDetails">Numero Camera</label>
-                    <input asp-for="ApartmentNumber.SpecialDetails" class="form-control">
+                    <label asp-for="ApartmentNumber.AptNo">Numero Camera</label>
+                    <input asp-for="ApartmentNumber.AptNo" class="form-control" disabled>
                 </div>
                 <div class="mb-3">
                     <label asp-for="ApartmentNumber.SpecialDetails">Dettagli</label>
-                    <input asp-for="ApartmentNumber.SpecialDetails" class="form-control">
+                    <input asp-for="ApartmentNumber.SpecialDetails" class="form-control" disabled>
                 </div>
-                <select asp-for="ApartmentNumber.ApartmentId" asp-items="@Model.Apartments" class="form-select" aria-label="Default select example">
+                <select disabled asp-for="ApartmentNumber.ApartmentId" asp-items="@Model.Apartments" class="form-select" aria-label="Default select example">
                     <option selected>Open this select menu</option>
                 </select>
 
-                <div class="d-flex justify-content-end gap-3">
+                <div class="d-flex justify-content-end gap-3 my-2">
                     <a class="myBtn orange" asp-controller="Apartment" asp-action="IndexApartment">
                         <span class="text">Indietro</span><span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
@@ -29,10 +31,10 @@
                             </svg>
                         </span>
                     </a>
-                    <button class="myBtn green" type="submit">
-                        <span class="text">Aggiungi</span><span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                    <button class="myBtn red" type="submit">
+                        <span class="text">Elimina</span><span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                             </svg>
                         </span>
                     </button>

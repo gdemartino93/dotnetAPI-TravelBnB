@@ -145,12 +145,25 @@ namespace TravelBnB_Web.Controllers
 
         public async Task<IActionResult> DeleteApartmentNumber(int aptNo)
         {
+            ApartmentNumberDeleteVM aptVM = new(); // dichiariamo il model che andremo ad usare nella vista
             var response = await _serviceAptNo.GetAsync<APIResponse>(aptNo);
             if (response is not null && response.IsSuccess)
             {
                 ApartmentNumberDTO apartment = JsonConvert.DeserializeObject<ApartmentNumberDTO>(Convert.ToString(response.Result));
-                return View(apartment);
+                aptVM.ApartmentNumber = apartment;
             }
+            response = await _serviceApt.GetAllAsync<APIResponse>();
+            if(response is not null && response.IsSuccess)
+            {
+                //prendiamo la lista degli appartemnti e popoliamo il dropdown per la select
+                aptVM.Apartments = JsonConvert.DeserializeObject<List<ApartmentDTO>>(Convert.ToString(response.Result)).Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Id.ToString()
+                });
+                return View(aptVM);
+            }
+            
             return NotFound();
         }
         [HttpPost]

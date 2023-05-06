@@ -124,7 +124,7 @@ a{
 }
 .mynav {
     width: 100%;
-    z-index:1;
+    z-index: 1;
     position: fixed;
     top: 0;
     background: rgba(0,0,0,.3);
@@ -136,4 +136,7 @@ a{
     font-size:60px;
     color:white;
     cursor:pointer;
+}
+.mybox{
+   padding-top:40px;
 }
