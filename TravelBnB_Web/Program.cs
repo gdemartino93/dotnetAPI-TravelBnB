@@ -13,6 +13,7 @@ namespace TravelBnB_Web
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddAutoMapper(typeof(MappingConfig));
+
             builder.Services.AddHttpClient<IApartmentService,ApartmentService>();
             builder.Services.AddScoped<IApartmentService, ApartmentService>();
 

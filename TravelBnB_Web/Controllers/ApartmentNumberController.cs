@@ -58,7 +58,6 @@ namespace TravelBnB_Web.Controllers
                 var response = await _serviceAptNo.CreateAsync<APIResponse>(model.ApartmentNumberCreateDTO);
                 if (response.IsSuccess && response is not null)
                 {
-
                     try
                     {
                         ModelState.AddModelError("Errore", response.ErrorMessages.FirstOrDefault());
@@ -68,7 +67,6 @@ namespace TravelBnB_Web.Controllers
                         return RedirectToAction(nameof(IndexApartmentNumber));
                         
                     }
-
                 }
             }
 
@@ -81,8 +79,8 @@ namespace TravelBnB_Web.Controllers
                     Value = a.Id.ToString()
                 });
             }
-
-            return View(model);
+			TempData["success"] = "Camera aggiunta con successo";
+			return View(model);
 
         }
 
@@ -120,13 +118,15 @@ namespace TravelBnB_Web.Controllers
                 var response = await _serviceAptNo.UpdateAsync<APIResponse>(apartment.ApartmentNumber);
                 if(response is not null && response.IsSuccess )
                 {
-                    return RedirectToAction(nameof(IndexApartmentNumber));
+					TempData["success"] = "Camera modificata con successo";
+					return RedirectToAction(nameof(IndexApartmentNumber));
                 }
                 else
                 {
                     if(response.ErrorMessages.Count > 0)
                     {
-                        ModelState.AddModelError("Error", response.ErrorMessages.FirstOrDefault());
+						TempData["errore"] = "C'è stato un problema con la modifica della camera";
+						ModelState.AddModelError("Error", response.ErrorMessages.FirstOrDefault());
                     }
                 }
             }
@@ -173,9 +173,11 @@ namespace TravelBnB_Web.Controllers
             var response = await _serviceAptNo.DeleteAsync<APIResponse>(apartment.ApartmentNumber.AptNo);
             if( response is not null && response.IsSuccess)
             {
-                return RedirectToAction(nameof(IndexApartmentNumber));
+				TempData["success"] = "Camera eliminata con successo";
+				return RedirectToAction(nameof(IndexApartmentNumber));
             }
-            return View(apartment);
+			TempData["errore"] = "C'è stato un problema con l'eliminazione della camera";
+			return View(apartment);
         }
     }
 }

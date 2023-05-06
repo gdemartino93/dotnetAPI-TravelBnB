@@ -38,9 +38,10 @@ namespace TravelBnB_Web.Controllers
             if(ModelState.IsValid)
             {
                 var response = await _service.CreateAsync<APIResponse>(apartmentCreateDTO);
-                if(response.IsSuccess && response is not null)
+                if(response is not null && response.IsSuccess)
                 {
-                    return RedirectToAction(nameof(IndexApartment));
+					TempData["success"] = "Appartamento aggiunto con successo";
+					return RedirectToAction(nameof(IndexApartment));
                 }
             }
             return View(apartmentCreateDTO);
@@ -52,9 +53,9 @@ namespace TravelBnB_Web.Controllers
             if (response is not null && response.IsSuccess)
             {
                 ApartmentDTO model = JsonConvert.DeserializeObject<ApartmentDTO>(Convert.ToString(response.Result));
-                return View(model);
+				return View(model);
             }
-            return NotFound();
+			return NotFound();
         }
         [HttpPost]
         [IgnoreAntiforgeryToken]
@@ -63,10 +64,11 @@ namespace TravelBnB_Web.Controllers
             var response = await _service.DeleteAsync<APIResponse>(model.Id);
             if(response.IsSuccess && response is not null)
             {
-                return RedirectToAction(nameof(IndexApartment));
+				TempData["success"] = "Appartamento eliminato con successo";
+				return RedirectToAction(nameof(IndexApartment));
             }
-
-            return View(model);
+			TempData["errore"] = "C'è stato un problema con l'eliminazione dell'appartamento";
+			return View(model);
         }
         public async Task<IActionResult> UpdateApartment(int id)
         {
@@ -85,9 +87,11 @@ namespace TravelBnB_Web.Controllers
             var response = await _service.UpdateAsync<APIResponse>(aptUpdate);
             if(ModelState.IsValid)
             {
-                return RedirectToAction(nameof(IndexApartment));
+				TempData["success"] = "Appartamento modificato con successo";
+				return RedirectToAction(nameof(IndexApartment));
             }
-            return View(aptUpdate);
+			TempData["errore"] = "C'è stato un problema con l'aggiornamento dell'appartamento";
+			return View(aptUpdate);
         }
     }
 }
