@@ -93,5 +93,16 @@ namespace TravelBnB_Web.Controllers
 			TempData["errore"] = "C'è stato un problema con l'aggiornamento dell'appartamento";
 			return View(aptUpdate);
         }
+
+        public async Task<IActionResult> SingleApartment(int id)
+        {
+            var response = await _service.GetAsync<APIResponse>(id);
+            if(response is not null && response.IsSuccess)
+            {
+                ApartmentDTO apt = JsonConvert.DeserializeObject<ApartmentDTO>(Convert.ToString(response.Result));
+                return View(apt);
+            }
+            return BadRequest();
+        }
     }
 }
