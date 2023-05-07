@@ -1,9 +1,12 @@
 ﻿@model ApartmentDTO
+@{
+	ViewData["Title"] = $"{Model.Name}";
+}
 <div class="container mybox my-5">
 	<h1 class="text-center fw-bold">@Model.Name</h1>
 	<div class="myAptSingle col-12 d-flex">
 		
-		<div class="leftSingleAp col-7">
+		<div class="leftSingleAp col-7 d-flex justify-content-center">
 			<img src="@Model.ImageUrl" class="img-fluid" />
 		</div>
 		<div class="rightSingleAp col-5 d-flex flex-column">

@@ -17,6 +17,7 @@ namespace TravelBnB_API
             builder.Services.AddAutoMapper(typeof(MappingConfig));
             builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
             builder.Services.AddScoped<IApartmentNumberRepository, ApartmentNumberRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddControllers().AddXmlDataContractSerializerFormatters();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

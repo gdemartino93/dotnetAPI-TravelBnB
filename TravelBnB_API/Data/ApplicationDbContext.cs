@@ -7,6 +7,7 @@ namespace TravelBnB_API.Data
     {
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<ApartmentNumber> ApartmentNumbers { get; set; }
+        public DbSet<LocalUser> LocalUsers { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {}
         protected override void OnModelCreating(ModelBuilder modelBuilder)

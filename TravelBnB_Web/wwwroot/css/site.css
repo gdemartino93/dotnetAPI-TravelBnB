@@ -159,20 +159,6 @@ a:hover{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .mycard {
     position: relative;
     display: flex;
@@ -221,8 +207,6 @@ a:hover{
     left: 0;
     right: 0;
     bottom: 0;
-    background-size: cover;
-    background-position: center;
     transform-origin: top center;
     transition-property: transform;
     transition-delay: 0.15s;
