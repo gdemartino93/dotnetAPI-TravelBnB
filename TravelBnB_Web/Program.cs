@@ -13,12 +13,23 @@ namespace TravelBnB_Web
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddAutoMapper(typeof(MappingConfig));
-
+            //apartment
             builder.Services.AddHttpClient<IApartmentService,ApartmentService>();
             builder.Services.AddScoped<IApartmentService, ApartmentService>();
-
+            //roomnumber
             builder.Services.AddHttpClient<IApartmentNumberService, ApartmentNumberService>();
             builder.Services.AddScoped<IApartmentNumberService,ApartmentNumberService>();
+            //auth
+            builder.Services.AddHttpClient<IAuthService, AuthService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
@@ -36,7 +47,7 @@ namespace TravelBnB_Web
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
