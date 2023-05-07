@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Net;
 using TravelBnB_API.Models;
 using TravelBnB_API.Models.Dto;
@@ -26,6 +28,9 @@ namespace TravelBnB_API.Controllers
 
         }
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> GetAll()
         {
             try
@@ -43,6 +48,9 @@ namespace TravelBnB_API.Controllers
             return _response;
         }
         [HttpGet("{aptNo}",Name = "GetAptNo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> Get(int aptNo )
         {
             try
@@ -70,6 +78,11 @@ namespace TravelBnB_API.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> Create([FromBody] ApartmentNumberCreateDTO createDTO)
         {
             try
@@ -112,6 +125,11 @@ namespace TravelBnB_API.Controllers
         }
 
         [HttpDelete("{aptNo}")]
+        [Authorize(Roles = "admin")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> Delete(int aptNo)
         {
             try
@@ -135,6 +153,12 @@ namespace TravelBnB_API.Controllers
             }
         }
         [HttpPut("{aptNo}")]
+        [Authorize(Roles = "admin")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult<APIResponse>> Update(int aptNo,[FromBody]ApartmentNumberUpdateDTO aptUpdateDto)
         {
 ;
