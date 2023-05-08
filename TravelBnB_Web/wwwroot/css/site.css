@@ -132,6 +132,7 @@ a:hover{
     top: 0;
     background: rgba(0,0,0,.3);
 }
+
 .scrollBtn{
     position:absolute;
     bottom:150px;
@@ -364,6 +365,10 @@ a:hover{
     border-radius: 18px;
     background-color: antiquewhite;
     background: linear-gradient(30deg, rgba(26, 42, 99, .85), rgba(26, 42, 99, .5));
+    -webkit-box-shadow: 0px 0px 79px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 79px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 79px 0px rgba(0,0,0,0.75);
+    border-radius: 18px;
 }
 
 .forms-section {

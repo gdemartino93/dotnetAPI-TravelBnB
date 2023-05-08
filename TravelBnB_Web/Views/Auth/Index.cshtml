@@ -15,11 +15,19 @@
                     <fieldset>
                         <div class="input-block">
                             <label for="login-email" asp-for="Login.Username">Username</label>
-                            <input id="login-email" type="text" asp-for="Login.Name">
+                            <input id="login-email" type="text" asp-for="Login.Username">
                         </div>
                         <div class="input-block">
                             <label for="login-password" asp-for="Login.Password">Password</label>
                             <input id="login-password" type="password" asp-for="Login.Password">
+                        </div>
+                        <div class="input-block">
+                            <label for="login-password" asp-for="Login.Role">Password</label>
+                            <input id="login-password" type="text" asp-for="Login.Role">
+                        </div>
+                        <div class="input-block">
+                            <label for="login-password" asp-for="Login.Name">Password</label>
+                            <input id="login-password" type="text" asp-for="Login.Name">
                         </div>
                     </fieldset>
                     <button type="submit" class="btn-login">Login</button>
