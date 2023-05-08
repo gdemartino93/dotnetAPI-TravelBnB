@@ -13,50 +13,55 @@ namespace TravelBnB_Web.Services
             _httpClientFactory = httpClientFactory;
             aptUrl = configuration.GetValue<string>("ServiceUrls:TravelBnBAPI"); 
         }
-        public Task<T> CreateAsync<T>(ApartmentCreateDTO dto)
+        public Task<T> CreateAsync<T>(ApartmentCreateDTO dto, string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = StaticData.ApiType.POST,
                 Data = dto,
-                Url = aptUrl + "apartment"
+                Url = aptUrl + "apartment",
+                Token = token
             });
         }
 
-        public Task<T> DeleteAsync<T>(int id)
+        public Task<T> DeleteAsync<T>(int id, string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = StaticData.ApiType.DELETE,
-                Url = aptUrl + "apartment/" + id
+                Url = aptUrl + "apartment/" + id,
+                Token = token
             });
         }
 
-        public Task<T> GetAllAsync<T>()
+        public Task<T> GetAllAsync<T>(string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = StaticData.ApiType.GET,
-                Url = aptUrl + "apartment"
+                Url = aptUrl + "apartment",
+                Token = token
             });
         }
 
-        public Task<T> GetAsync<T>(int id)
+        public Task<T> GetAsync<T>(int id, string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = StaticData.ApiType.GET,
-                Url = $"{aptUrl}apartment/{id}"
+                Url = $"{aptUrl}apartment/{id}",
+                Token = token
             });
         }
 
-        public Task<T> UpdateAsync<T>(ApartmentUpdateDTO dto)
+        public Task<T> UpdateAsync<T>(ApartmentUpdateDTO dto, string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = StaticData.ApiType.PUT,
                 Data = dto,
-                Url = aptUrl + "apartment/" + dto.Id
+                Url = aptUrl + "apartment/" + dto.Id,
+                Token = token
             });
         }
     }

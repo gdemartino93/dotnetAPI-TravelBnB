@@ -26,20 +26,23 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Apartment" asp-action="IndexApartment">Appartamenti</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white"  asp-controller="ApartmentNumber" asp-action="IndexApartmentNumber">Camere</a>
-                        </li>
-                       
+                        @if (httpAccess.HttpContext.Session.GetString(StaticData.SessionToken) is not null &&
+                             httpAccess.HttpContext.Session.GetString(StaticData.SessionToken).ToString().Length > 0)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Apartment" asp-action="IndexApartment">Appartamenti</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white"  asp-controller="ApartmentNumber" asp-action="IndexApartmentNumber">Camere</a>
+                            </li>
+                        }
+
                     </ul>
                     <span>
                         @if (httpAccess.HttpContext.Session.GetString(StaticData.SessionToken) is not null &&
-                        httpAccess.HttpContext.Session.GetString(StaticData.SessionToken).ToString().Length > 0)
+                             httpAccess.HttpContext.Session.GetString(StaticData.SessionToken).ToString().Length > 0)
                         {
-                            <a class="nav-link text-white" asp-controller="Auth" asp-action="Index">Accesso</a>
-                            <span class="text-danger">sei loggato</span>
+                            <span class="text-danger">sei loggato </span>
                         }
                         else{
 

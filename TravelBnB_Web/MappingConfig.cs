@@ -18,20 +18,20 @@ namespace TravelBnB_Web.Models
 
             //DEBUG
 
-            //CreateMap<Apartment,ApartmentDTO>().ReverseMap();
-            //CreateMap<Apartment,ApartmentCreateDTO>().ReverseMap();
-            //CreateMap<Apartment,ApartmentUpdateDTO>().ReverseMap();
+            CreateMap<Apartment, ApartmentDTO>().ReverseMap();
+            CreateMap<Apartment, ApartmentCreateDTO>().ReverseMap();
+            CreateMap<Apartment, ApartmentUpdateDTO>().ReverseMap();
 
-            //CreateMap<ApartmentNumber, ApartmentNumberDTO>().ReverseMap();
-            //CreateMap<ApartmentNumberDTO, ApartmentNumberCreateDTO>().ReverseMap();
-
-
-
-            //CreateMap<ApartmentNumber, ApartmentNumberUpdateDTO>().ReverseMap();
-            //CreateMap<ApartmentNumberDTO, ApartmentNumberUpdateDTO>().ReverseMap();
+            CreateMap<ApartmentNumber, ApartmentNumberDTO>().ReverseMap();
+            CreateMap<ApartmentNumberDTO, ApartmentNumberCreateDTO>().ReverseMap();
 
 
-            //CreateMap<ApartmentNumberCreateDTO,ApartmentNumber>().ReverseMap();
+
+            CreateMap<ApartmentNumber, ApartmentNumberUpdateDTO>().ReverseMap();
+            CreateMap<ApartmentNumberDTO, ApartmentNumberUpdateDTO>().ReverseMap();
+
+
+            CreateMap<ApartmentNumberCreateDTO, ApartmentNumber>().ReverseMap();
         }
     }
 }

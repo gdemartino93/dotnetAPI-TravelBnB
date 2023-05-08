@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using TravelBnB_Utility;
 using TravelBnB_Web.Models;
 using TravelBnB_Web.Models.Dto;
@@ -42,6 +45,14 @@ namespace TravelBnB_Web.Controllers
             {
                 
                 LoginResponseDTO res = JsonConvert.DeserializeObject<LoginResponseDTO>(Convert.ToString(response.Result));
+
+                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                //assegniamo i role
+                identity.AddClaim(new Claim(ClaimTypes.Name, res.User.Username));
+                identity.AddClaim(new Claim(ClaimTypes.Role, res.User.Role));
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
                 HttpContext.Session.SetString(StaticData.SessionToken, res.Token);
                 return RedirectToAction("Index","Home");
             }

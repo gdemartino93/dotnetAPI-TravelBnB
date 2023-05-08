@@ -654,3 +654,12 @@ a:hover{
     box-shadow: inset 0 0 0 2px #a7e245;
     transform: translateX(30%);
 }
+/*access denies*/
+.access-denied {
+    height: 100vh;
+    background: beige;
+    overflow: hidden;
+}
+.deniedtext{
+    font-size: 40px;
+}

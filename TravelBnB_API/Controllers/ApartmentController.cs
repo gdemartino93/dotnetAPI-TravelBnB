@@ -72,8 +72,8 @@ namespace TravelBnB_API.Controllers
             }
             return _response;
         }
-        [HttpPost]
         [Authorize(Roles = "admin")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -105,6 +105,7 @@ namespace TravelBnB_API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "admin")]
 
         public async Task<ActionResult<APIResponse>> DeleteApartment(int id)
         {
@@ -128,6 +129,7 @@ namespace TravelBnB_API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<APIResponse>> UpdateApartment(int id, [FromBody]ApartmentUpdateDTO apartmentDTO)
         {
             try

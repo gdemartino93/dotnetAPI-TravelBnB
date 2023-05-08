@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using TravelBnB_Web.Models;
 using TravelBnB_Web.Services;
 using TravelBnB_Web.Services.IServices;
@@ -23,6 +24,15 @@ namespace TravelBnB_Web
             builder.Services.AddHttpClient<IAuthService, AuthService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(cookies =>
+                    {
+                        cookies.Cookie.HttpOnly = true;
+                        cookies.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                        cookies.LoginPath = "/Auth/Index";
+                        cookies.AccessDeniedPath = "/Auth/AccessDenied";
+                        cookies.SlidingExpiration = true; 
+                    });
             //httpcontext homepage
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -48,7 +58,7 @@ namespace TravelBnB_Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
             app.MapControllerRoute(

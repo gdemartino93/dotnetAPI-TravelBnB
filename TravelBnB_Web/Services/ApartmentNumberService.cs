@@ -13,50 +13,55 @@ namespace TravelBnB_Web.Services
             _httpClientFactory = httpClient;
             aptUrl = configuration.GetValue<string>("ServiceUrls:TravelBnBAPI");
         }
-        public Task<T> CreateAsync<T>(ApartmentNumberCreateDTO dto)
+        public Task<T> CreateAsync<T>(ApartmentNumberCreateDTO dto, string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = TravelBnB_Utility.StaticData.ApiType.POST,
                 Data = dto,
-                Url = aptUrl + "apartmentnumber"
+                Url = aptUrl + "apartmentnumber",
+                Token = token
             });
         }
 
-        public Task<T> DeleteAsync<T>(int number)
+        public Task<T> DeleteAsync<T>(int number, string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = TravelBnB_Utility.StaticData.ApiType.DELETE,
-                Url = aptUrl + "apartmentnumber/" + number
+                Url = aptUrl + "apartmentnumber/" + number,
+                Token = token
             });
         }
 
-        public Task<T> GetAllAsync<T>()
+        public Task<T> GetAllAsync<T>(string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = TravelBnB_Utility.StaticData.ApiType.GET,
-                Url = aptUrl + "apartmentnumber"
+                Url = aptUrl + "apartmentnumber",
+                Token = token
             });
         }
 
-        public Task<T> GetAsync<T>(int number)
+        public Task<T> GetAsync<T>(int number, string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = TravelBnB_Utility.StaticData.ApiType.GET,
-                Url = aptUrl + "apartmentnumber/" + number
+                Url = aptUrl + "apartmentnumber/" + number,
+                Token = token
             });
         }
 
-        public Task<T> UpdateAsync<T>(ApartmentNumberUpdateDTO dto)
+        public Task<T> UpdateAsync<T>(ApartmentNumberUpdateDTO dto, string token)
         {
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = TravelBnB_Utility.StaticData.ApiType.PUT,
                 Url = aptUrl + "apartmentnumber/" + dto.AptNo,
-                Data = dto
+                Data = dto,
+                Token = token
             });
         }
        
