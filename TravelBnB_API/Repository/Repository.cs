@@ -28,7 +28,7 @@ namespace TravelBnB_API.Repository
             await SaveAsync();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, int pageSize = 3,int currentPage = 1)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, int pageSize = 0,int currentPage = 0)
         {
             IQueryable<T> query = dbSet;
             if (filter is not null)
@@ -42,8 +42,13 @@ namespace TravelBnB_API.Repository
                     query = query.Include(includeProp);
                 }
             }
+            //attiva la paginazione solo se è maggiore è presente un valore
             if(pageSize > 0)
             {
+                if(currentPage == 0)
+                {
+                    currentPage = 1;
+                }
                 query = query.Skip(pageSize * (currentPage - 1)).Take(pageSize);
             }
             return await query.ToListAsync();

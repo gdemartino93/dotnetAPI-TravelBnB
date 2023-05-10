@@ -26,12 +26,12 @@ namespace TravelBnB_API.Controllers.v2
         [HttpGet]
         [ResponseCache(CacheProfileName = "Default30s")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetApartments([FromQuery] int? maxPrice, [FromQuery] string? term, int pageSize = 3, int currentPage = 1)
+        public async Task<ActionResult<APIResponse>> GetApartments([FromQuery] int? maxPrice, [FromQuery] string? term, int pageSize = 0, int currentPage = 0)
         {
             try
             {
                 IEnumerable<Apartment> apartments;
-                if(maxPrice is not null)
+                if(maxPrice is not null )
                 {
                     //se è settato il filtro ci torna gli apt con il prezzo massimo il valore settato
                     apartments = await _apartmentRepository.GetAllAsync(a=> a.Rate <=  maxPrice, pageSize:pageSize, currentPage: currentPage );
