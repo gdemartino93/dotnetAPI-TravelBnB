@@ -43,6 +43,7 @@ namespace TravelBnB_API.Controllers.v1
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.Message };
             }
+
             return _response;
         }
         [HttpGet("{id}", Name = "GetApartment")]

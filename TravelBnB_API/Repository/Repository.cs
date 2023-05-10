@@ -28,7 +28,7 @@ namespace TravelBnB_API.Repository
             await SaveAsync();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, int pageSize = 3,int currentPage = 1)
         {
             IQueryable<T> query = dbSet;
             if (filter is not null)
@@ -41,6 +41,10 @@ namespace TravelBnB_API.Repository
                 {
                     query = query.Include(includeProp);
                 }
+            }
+            if(pageSize > 0)
+            {
+                query = query.Skip(pageSize * (currentPage - 1)).Take(pageSize);
             }
             return await query.ToListAsync();
 

@@ -25,20 +25,26 @@ namespace TravelBnB_API.Controllers.v2
         [HttpGet]
         [ResponseCache(CacheProfileName = "Default30s")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetApartments([FromQuery] int? qPrice)
+        public async Task<ActionResult<APIResponse>> GetApartments([FromQuery] int? maxPrice, [FromQuery] string? term, int pageSize = 3, int currentPage = 1)
         {
             try
             {
-
                 IEnumerable<Apartment> apartments;
-                if(qPrice is not null)
+                if(maxPrice is not null)
                 {
-                    apartments = await _apartmentRepository.GetAllAsync(a=> a.Rate <  qPrice);
+                    //se è settato il filtro ci torna gli apt con il prezzo massimo il valore settato
+                    apartments = await _apartmentRepository.GetAllAsync(a=> a.Rate <=  maxPrice, pageSize:pageSize, currentPage: currentPage );
                 }
                 else
                 {
-                    apartments = await _apartmentRepository.GetAllAsync();
+                    //altrimenti ci torna tutti gli appartamenti
+                    apartments = await _apartmentRepository.GetAllAsync(pageSize: pageSize, currentPage: currentPage);
                 }
+                if (!string.IsNullOrEmpty(term))
+                {
+                    apartments = apartments.Where(a => a.Name.ToLower().Contains(term.ToLower()));
+                }
+
 
                 _response.Result = _mapper.Map<IEnumerable<ApartmentDTO>>(apartments);
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
