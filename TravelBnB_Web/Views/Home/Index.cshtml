@@ -10,10 +10,10 @@
     <div class="row text-center my-5">
         <h1>Appartamenti disponibili</h1>
     </div>
-    <div class="row mt-5 justify-content-around g-3">
+    <div class="row mt-5 justify-content-between g-5">
         @foreach(var apt in Model)
         {
-			<a  class="mycard" asp-controller="Apartment" asp-action="SingleApartment" asp-route-id="@apt.Id">
+			<a class="mycard col-3 mx-3" asp-controller="Apartment" asp-action="SingleApartment" asp-route-id="@apt.Id">
 				<div class="card__head">
 					<div class="card__image">
 						<img src="@apt.ImageUrl" class="img-fluid">

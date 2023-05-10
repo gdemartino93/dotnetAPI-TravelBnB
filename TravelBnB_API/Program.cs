@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
+using TravelBnB_API.Models;
 
 namespace TravelBnB_API
 {
@@ -25,6 +27,16 @@ namespace TravelBnB_API
             builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
             builder.Services.AddScoped<IApartmentNumberRepository, ApartmentNumberRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            //auth identity .net
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+
+
+
+
+
             //caching request
             builder.Services.AddResponseCaching();
             //versioning    
