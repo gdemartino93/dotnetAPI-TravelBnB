@@ -25,6 +25,8 @@ namespace TravelBnB_API
             builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
             builder.Services.AddScoped<IApartmentNumberRepository, ApartmentNumberRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            //caching request
+            builder.Services.AddResponseCaching();
             //versioning    
             builder.Services.AddApiVersioning(options =>
             {
@@ -55,7 +57,14 @@ namespace TravelBnB_API
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key))
                 };
             });
-            builder.Services.AddControllers().AddXmlDataContractSerializerFormatters();
+            builder.Services.AddControllers(options =>
+            {
+                options.CacheProfiles.Add("Default30s",
+                    new CacheProfile()
+                    {
+                        Duration = 30,
+                    });
+            }).AddXmlDataContractSerializerFormatters();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options => {

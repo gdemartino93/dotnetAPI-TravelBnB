@@ -30,10 +30,10 @@ namespace TravelBnB_Web.Controllers
             APIResponse response = await _authService.RegisterAsync<APIResponse>(model.Register);
             if(response is not null && response.IsSuccess)
             {
-                RegisterRequestDTO res = JsonConvert.DeserializeObject<RegisterRequestDTO>(Convert.ToString(response.Result));
+               return RedirectToAction("Index","Home");
 
             }
-            return View();
+            return RedirectToAction("Index", "Auth");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -5,8 +5,9 @@ using TravelBnB_API.Repository.IRepository;
 
 namespace TravelBnB_API.Controllers
 {
-    [Route("api/UserAuth")]
+    [Route("api/v{version:apiVersion}/UserAuth")]
     [ApiController]
+    [ApiVersionNeutral]
     public class UsersController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -17,17 +18,17 @@ namespace TravelBnB_API.Controllers
             _response = new();
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]LoginRequestDTO loginRequestDTO)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
         {
             var loginRes = await _userRepository.Login(loginRequestDTO);
-            if(loginRes.User == null || string.IsNullOrEmpty(loginRes.Token))
+            if (loginRes.User == null || string.IsNullOrEmpty(loginRes.Token))
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 _response.ErrorMessages.Add("Username o password non corretti");
-                return BadRequest(_response);              
+                return BadRequest(_response);
             }
-            _response.StatusCode=System.Net.HttpStatusCode.OK;
+            _response.StatusCode = System.Net.HttpStatusCode.OK;
             _response.Result = loginRes;
             _response.IsSuccess = true;
 
@@ -36,8 +37,8 @@ namespace TravelBnB_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequestDTO)
         {
-            bool userExist =  _userRepository.IsUniqueUser(registerRequestDTO.Username);
-            if(!userExist)
+            bool userExist = _userRepository.IsUniqueUser(registerRequestDTO.Username);
+            if (!userExist)
             {
                 _response.ErrorMessages.Add("L'username è già esistente!");
                 _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
@@ -45,14 +46,14 @@ namespace TravelBnB_API.Controllers
                 return BadRequest(_response);
             }
             var newUser = await _userRepository.Register(registerRequestDTO);
-            if(newUser == null)
+            if (newUser == null)
             {
                 _response.ErrorMessages.Add("L'username è già esistente!");
                 _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
                 return BadRequest(_response);
             }
-            _response.StatusCode =System.Net.HttpStatusCode.OK;
+            _response.StatusCode = System.Net.HttpStatusCode.OK;
             _response.Result = newUser;
             return Ok(_response);
         }
