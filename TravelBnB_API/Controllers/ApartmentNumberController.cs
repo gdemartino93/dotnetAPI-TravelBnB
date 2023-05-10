@@ -11,7 +11,7 @@ using TravelBnB_API.Repository.IRepository;
 
 namespace TravelBnB_API.Controllers
 {
-    [Route("/api/apartmentnumber")]
+    [Route("/api/v{version:ApiVersion}/apartmentnumber")]
     [ApiController]
     public class ApartmentNumberController : ControllerBase
     {

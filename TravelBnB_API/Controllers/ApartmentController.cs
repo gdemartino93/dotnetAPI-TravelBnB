@@ -11,8 +11,9 @@ using TravelBnB_API.Repository.IRepository;
 
 namespace TravelBnB_API.Controllers
 {
-    [Route("/api/apartment")]
+    [Route("/api/v{version:apiVersion}/apartment")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class ApartmentController : Controller
     {
         private readonly IApartmentRepository _apartmentRepository;
@@ -23,7 +24,8 @@ namespace TravelBnB_API.Controllers
             _apartmentRepository = apartmentRepository;
             _mapper = mapper;
             this._response = new APIResponse();
-        } 
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetApartments()
@@ -100,8 +102,8 @@ namespace TravelBnB_API.Controllers
             }
             return _response;
         }
+
         [HttpDelete("{id}",Name = "DeleteApartment")]
-        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -129,7 +131,6 @@ namespace TravelBnB_API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "admin")]
         public async Task<ActionResult<APIResponse>> UpdateApartment(int id, [FromBody]ApartmentUpdateDTO apartmentDTO)
         {
             try

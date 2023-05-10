@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TravelBnB_API
 {
@@ -22,6 +25,18 @@ namespace TravelBnB_API
             builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
             builder.Services.AddScoped<IApartmentNumberRepository, ApartmentNumberRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            //versioning    
+            builder.Services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
+            builder.Services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
             //auth
             var key = builder.Configuration.GetValue<string>("ApiSettings:Secret");
             builder.Services.AddAuthentication(auth =>
@@ -71,26 +86,54 @@ namespace TravelBnB_API
             new List<string>()
         }
     });
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1.0",
+                    Title = "TravelBnb V1",
+                    Description = "Free API TravelBnB designed by Gianluca De Martino",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Gianluca De MARTINO",
+                        Url = new Uri("https://www.gianlucademartino.it")
+                    },
+
+                });
+                options.SwaggerDoc("v2", new OpenApiInfo
+                {
+                    Version = "v2.0",
+                    Title = "TravelBnb V2",
+                    Description = "Free API TravelBnB designed by Gianluca De Martino. V2 WORKING IN PROGRESS",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Gianluca De MARTINO",
+                        Url = new Uri("https://www.gianlucademartino.it")
+                    },
+
+                });
 
             });
-
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                // Configure the HTTP request pipeline.
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI(options =>
+                    {
+                        options.SwaggerEndpoint("/swagger/v1/swagger.json", "TravelBnBv1");
+                        options.SwaggerEndpoint("/swagger/v2/swagger.json", "TravelBnBv2");
+                    });
+                }
+                //abilito cors per angular
+                app.UseCors(options => options.WithOrigins("*").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+                app.UseHttpsRedirection();
+                app.UseAuthentication();
+                app.UseAuthorization();
+
+
+                app.MapControllers();
+
+                app.Run();
             }
-
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
-        }
     }
-}
+    } 
