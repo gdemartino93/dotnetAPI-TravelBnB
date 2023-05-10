@@ -59,8 +59,26 @@ namespace TravelBnB_API.Controllers.v1
                 if (aptNo == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
+                var idExist = await _aptNo.GetAsync(a => a.AptNo == aptNo,tracked:false);
+                if(idExist is null)
+                {
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.IsSuccess = false;
+                    return NotFound(_response);
+                }
+                try
+                {
+                    _aptNo.GetAsync(x => x.AptNo != aptNo, tracked: false);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                } 
+
                 var apt = await _aptNo.GetAsync(a => a.AptNo == aptNo);
                 if (apt is null)
                 {

@@ -2,6 +2,7 @@
 using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using TravelBnB_API.Models;
 using TravelBnB_API.Models.Dto;
 using TravelBnB_API.Repository.IRepository;
@@ -44,8 +45,9 @@ namespace TravelBnB_API.Controllers.v2
                 {
                     apartments = apartments.Where(a => a.Name.ToLower().Contains(term.ToLower()));
                 }
+                Pagination pagination = new Pagination() { PageSize = pageSize , CurrentPage = currentPage};
 
-
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagination)); //serializziamo l'oggetto pagination e l'aggiungiamo all'header della risposta dell api
                 _response.Result = _mapper.Map<IEnumerable<ApartmentDTO>>(apartments);
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
                 return Ok(_response);
