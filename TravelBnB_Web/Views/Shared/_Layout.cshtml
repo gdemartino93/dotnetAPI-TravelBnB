@@ -42,7 +42,7 @@
                         @if (httpAccess.HttpContext.Session.GetString(StaticData.SessionToken) is not null &&
                              httpAccess.HttpContext.Session.GetString(StaticData.SessionToken).ToString().Length > 0)
                         {
-                            <span class="text-danger">sei loggato </span>
+                            <a class="text-danger" asp-controller="Auth" asp-action="Logout">Logout</a>
                         }
                         else{
 

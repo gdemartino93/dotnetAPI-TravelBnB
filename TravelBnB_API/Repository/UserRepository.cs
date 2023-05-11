@@ -69,6 +69,7 @@ namespace TravelBnB_API.Repository
             {
                 UserName = registerRequestDTO.Username,
                 Name = registerRequestDTO.Name,
+                Lastname = registerRequestDTO.Lastname,
                 Email = registerRequestDTO.Username,
             };
             try
@@ -83,6 +84,7 @@ namespace TravelBnB_API.Repository
                     }
                     await _userManager.AddToRoleAsync(newUser, "admin");
                     var userReturn = _context.ApplicationUsers.FirstOrDefault(u => u.UserName == registerRequestDTO.Username);
+
                     return _mapper.Map<UserDTO>(userReturn);
                 }
             }
@@ -117,7 +119,6 @@ namespace TravelBnB_API.Repository
             {
                 Token = token,
                 User = _mapper.Map<UserDTO>(user),
-                Role = roles.FirstOrDefault(),
             };
 
             return loginResponseDTO;
