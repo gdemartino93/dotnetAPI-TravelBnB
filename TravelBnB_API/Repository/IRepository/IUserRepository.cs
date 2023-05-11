@@ -7,6 +7,6 @@ namespace TravelBnB_API.Repository.IRepository
     {
         bool IsUniqueUser(string username);
         Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
-        Task<LocalUser> Register(RegisterRequestDTO registerRequestDTO);
+        Task<UserDTO> Register(RegisterRequestDTO registerRequestDTO);
     }
 }

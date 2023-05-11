@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,16 +15,22 @@ namespace TravelBnB_API.Repository
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private string secretKey;
-        public UserRepository(ApplicationDbContext context, IConfiguration configuration)
+        private readonly IMapper _mapper;
+        public UserRepository(ApplicationDbContext context, IConfiguration configuration, UserManager<ApplicationUser> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
             secretKey = configuration.GetValue<string>("ApiSettings:Secret");
-            Console.WriteLine($"Secret Key: {secretKey}");
+            //Console.WriteLine($"Secret Key: {secretKey}"); //debug
+            _mapper = mapper;
+            _roleManager = roleManager;
         }
         public bool IsUniqueUser(string username)
         {
-            var user = _context.LocalUsers.FirstOrDefault(x => x.Username == username);
+            var user = _context.ApplicationUsers.FirstOrDefault(u => u.Name == username);
             if (user == null)
             {
                 return true;
@@ -32,68 +40,95 @@ namespace TravelBnB_API.Repository
                 return false;
             }
         }
-
-        public Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
+        //metodo per la generazione del token
+        private string GenerateJwtToken(ApplicationUser user, string secretKey)
         {
-            var user = _context.LocalUsers.FirstOrDefault(u =>
-            u.Username.ToLower() == loginRequestDTO.Username.ToLower() &&
-            u.Password == loginRequestDTO.Password);
-            if (user == null)
-            {
-                new LoginResponseDTO()
-                {
-                    User = null,
-                    Token = "",
-                };
-            }
-            //generiamo il token
-            var token = GenerateJwtToken(user);
-            var response = new LoginResponseDTO
-            {
-                Token = token,
-                User = user,
-            };
-            return Task.FromResult(response);
-
-        }
-
-        public async Task<LocalUser> Register(RegisterRequestDTO registerRequestDTO)
-        {
-            LocalUser newUser = new LocalUser()
-            {
-                Username = registerRequestDTO.Username,
-                Name = registerRequestDTO.Name,
-                Password = registerRequestDTO.Password,
-                Role = registerRequestDTO.Role,
-            };
-            _context.LocalUsers.Add(newUser);
-            _context.SaveChanges();
-            newUser.Password = ""; //azzeriamo il campo password dopo averlo salvato nel db per fare in modo che non torna la password come risposta dall api
-            return newUser;
-        }
-        //metodo per la generazione del Jwt Token e definizione del contenuto
-        private string GenerateJwtToken(LocalUser user)
-        {
-            if (user == null)
-            {
-                return string.Empty;
-            }
-
+            var roles = _userManager.GetRolesAsync(user).Result;
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.Name, user.Id.ToString()),
+            new Claim(ClaimTypes.Role, roles.FirstOrDefault())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+
+        public async Task<UserDTO> Register(RegisterRequestDTO registerRequestDTO)
+        {
+            ApplicationUser newUser = new()
+            {
+                UserName = registerRequestDTO.Username,
+                Name = registerRequestDTO.Name,
+                Email = registerRequestDTO.Username,
+            };
+            try
+            {
+                var createUser = await _userManager.CreateAsync(newUser, registerRequestDTO.Password);
+                if (createUser.Succeeded)
+                {
+                    if (!_roleManager.RoleExistsAsync("admin").GetAwaiter().GetResult())
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "admin" });
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "user" });
+                    }
+                    await _userManager.AddToRoleAsync(newUser, "admin");
+                    var userReturn = _context.ApplicationUsers.FirstOrDefault(u => u.UserName == registerRequestDTO.Username);
+                    return _mapper.Map<UserDTO>(userReturn);
+                }
+            }
+            catch (Exception)
+            {
+                 
+            }
+            return new UserDTO();
+        }
+
+
+
+        public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
+        {
+            var user = _context.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDTO.Username.ToLower());
+
+            bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
+
+            if (user == null || isValid == false)
+            {
+                return new LoginResponseDTO()
+                {
+                    Token = "",
+                    User = null
+                };
+            }
+
+            var token =  GenerateJwtToken(user, secretKey);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var loginResponseDTO = new LoginResponseDTO()
+            {
+                Token = token,
+                User = _mapper.Map<UserDTO>(user),
+                Role = roles.FirstOrDefault(),
+            };
+
+            return loginResponseDTO;
+        }
+
+
+
+
+
+
+
+
     }
 }

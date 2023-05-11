@@ -16,6 +16,7 @@ namespace TravelBnB_API
             CreateMap<ApartmentNumberDTO, ApartmentNumberCreateDTO>().ReverseMap();
             CreateMap<ApartmentNumber, ApartmentNumberUpdateDTO>().ReverseMap();
             CreateMap<ApartmentNumberCreateDTO,ApartmentNumber>().ReverseMap();
+            CreateMap<ApplicationUser,UserDTO>().ReverseMap();
 
         }
     }
