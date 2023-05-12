@@ -82,7 +82,7 @@ namespace TravelBnB_API.Repository
                         await _roleManager.CreateAsync(new IdentityRole { Name = "admin" });
                         await _roleManager.CreateAsync(new IdentityRole { Name = "user" });
                     }
-                    await _userManager.AddToRoleAsync(newUser, "admin");
+                    await _userManager.AddToRoleAsync(newUser, "user");
                     var userReturn = _context.ApplicationUsers.FirstOrDefault(u => u.UserName == registerRequestDTO.Username);
 
                     return _mapper.Map<UserDTO>(userReturn);
@@ -108,7 +108,7 @@ namespace TravelBnB_API.Repository
                 return new LoginResponseDTO()
                 {
                     Token = "",
-                    User = null
+                    User = null,
                 };
             }
 

@@ -177,7 +177,6 @@ namespace TravelBnB_API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<ActionResult<APIResponse>> Update(int aptNo, [FromBody] ApartmentNumberUpdateDTO aptUpdateDto)
         {
             ;

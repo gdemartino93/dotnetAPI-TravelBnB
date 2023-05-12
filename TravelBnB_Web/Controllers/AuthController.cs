@@ -61,8 +61,8 @@ namespace TravelBnB_Web.Controllers
             }
             else
             {
-                ModelState.AddModelError("error",response.ErrorMessages.FirstOrDefault());
-                return View(model);
+                ModelState.AddModelError("error","Username e Password non corretti");
+                return View("Index",model);
             }
         }
         public IActionResult AccessDenied()

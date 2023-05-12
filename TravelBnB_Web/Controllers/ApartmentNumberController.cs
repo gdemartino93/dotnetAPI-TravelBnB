@@ -49,7 +49,6 @@ namespace TravelBnB_Web.Controllers
                     Value = a.Id.ToString()
 
                 });
-
             }
             return View(aptList);
         }
@@ -85,23 +84,31 @@ namespace TravelBnB_Web.Controllers
                     Text = a.Name,
                     Value = a.Id.ToString()
                 });
+                
             }
-			TempData["success"] = "Camera aggiunta con successo";
-			return View(model);
+            if (ModelState.IsValid)
+            {
+                TempData["success"] = "Camera aggiunta con successo";
+            }
+            else
+            {
+                TempData["error"] = "Numero di camera già esistente";
+            }
+            return View(model);
 
         }
         [Authorize(Roles = "admin")]
-
         public async Task<IActionResult> UpdateApartmentNumber(int aptNo)
         {
             //usiamo il viewmodel per ottenre gli appartamenti per popolare il menu dropdown
             ApartmentNumberUpdateVM aptList = new();
             var response = await _serviceAptNo.GetAsync<APIResponse>(aptNo, HttpContext.Session.GetString(StaticData.SessionToken));
-            if(response is not null && response.IsSuccess)
+            if (response is not null && response.IsSuccess)
             {
                 ApartmentNumberDTO apartment = JsonConvert.DeserializeObject<ApartmentNumberDTO>(Convert.ToString(response.Result));
                 aptList.ApartmentNumber = _mapper.Map<ApartmentNumberUpdateDTO>(apartment);
             }
+
 
             var res = await _serviceApt.GetAllAsync<APIResponse>(HttpContext.Session.GetString(StaticData.SessionToken));
             if (res.IsSuccess && res is not null)
@@ -120,7 +127,6 @@ namespace TravelBnB_Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-
         public async Task<IActionResult> UpdateApartment(ApartmentNumberUpdateVM apartment)
         {
             if(ModelState.IsValid)
@@ -153,7 +159,6 @@ namespace TravelBnB_Web.Controllers
             return View(apartment);
         }
         [Authorize(Roles = "admin")]
-
         public async Task<IActionResult> DeleteApartmentNumber(int aptNo)
         {
             ApartmentNumberDeleteVM aptVM = new(); // dichiariamo il model che andremo ad usare nella vista
@@ -180,7 +185,6 @@ namespace TravelBnB_Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-
         public async Task<IActionResult> DeleteApartment(ApartmentNumberDeleteVM apartment)
         {
             var response = await _serviceAptNo.DeleteAsync<APIResponse>(apartment.ApartmentNumber.AptNo, HttpContext.Session.GetString(StaticData.SessionToken));
